@@ -1,0 +1,53 @@
+## READ ME:
+# In case this script is used: 
+# - Change the 'environment' section of the InfluxDB and Telegraf containers. Make sure these to pay special attention to the (SPECIAL) CHANGE parts.
+# - Make sure you have downloaded the latest Telegraf, InfluxDB and Grafana images using the 'docker pull' command
+# - After adjusting this script, rename the document to 'docker-compose.yml'
+## ----
+
+version: '3.6'
+services:
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    ports:
+      - "8083:8083"
+      - "8086:8086"
+    environment:
+      - DOCKER_INFLUXDB_INIT_MODE=setup               # <-- DO NOT CHANGE
+      - DOCKER_INFLUXDB_INIT_USERNAME=username        # <-- CHANGE
+      - DOCKER_INFLUXDB_INIT_PASSWORD=password        # <-- CHANGE
+      - DOCKER_INFLUXDB_INIT_ORG=ORGANIZATION         # <-- (SPECIAL) CHANGE - Should be same organization value as under 'environment' telegraf part.
+      - DOCKER_INFLUXDB_INIT_BUCKET=BUCKET            # <-- (SPECIAL) CHANGE - Should be same bucket value as under 'environment' telegraf part.
+      - DOCKER_INFLUXDB_INIT_ADMIN_TOKEN=ADMIN_TOKEN  # <-- (SPECIAL) CHANGE  - Should be same admin token as under 'environment' telegraf part.
+      
+    volumes:
+      - ./vols/:/var/lib/influxdb
+    restart: always
+
+  telegraf:
+    container_name: telegraf
+    image: telegraf:latest 
+    ports:
+      - "57500:57500"
+    environment:
+      - INFLUXDB_TOKEN=ADMIN_TOKEN                    # <-- (SPECIAL) CHANGE  - Should be same admin token as under 'environment' influxdb part.                  
+      - DOCKER_INFLUXDB_INIT_BUCKET=BUCKET            # <-- (SPECIAL) CHANGE  - Should be same bucket value as under 'environment' influxdb part.
+      - DOCKER_INFLUXDB_INIT_ORG=ORGANIZATIONbucketz  # <-- (SPECIAL) CHANGE  - Should be same organization value as under 'environment' influxdb part.
+    links:
+      - influxdb
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+
+  grafana:
+    container_name: grafana
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_FEATURE_TOGGLES_ENABLE=publicDashboards
+    links:
+      - influxdb
+    restart: always

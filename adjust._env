@@ -1,0 +1,29 @@
+# After adjusting this script, rename the document to '.env'
+
+# IOS XE DEVICE DETAILS ---
+TEL_IP_ADDRESS =        '1.1.1.1'
+TEL_PORT =              '830' # assuming SSH is used
+
+# This should be configured on the device itself
+TEL_USERNAME =          'username'
+TEL_PASSWORD =          'username'
+
+# location framework.xml
+TEL_REL_LOCATION =      "framework.xml" # make sure this refers to the right location of the framework.xml file (e.g. "folder/framework.xml")
+
+# SUBSCRIPTION DETAILS ---
+# multiple subscriptions can be configured per devices
+# for standization purposes an equal number of arguments should be used: e.g. the subscription length should be equal to the ip-address list length
+
+# telemetry subscription ID's can be adjusted to wishes of user
+TEL_SUBSCRIPTION_LIST = "100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114" 
+
+# in ms, 100 = 1 s
+TEL_PERIOD_LIST =       "100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100" 
+
+# x-path's can be adjusted to wishes of user - check out Cisco's YANG suite (https://developer.cisco.com/yangsuite/)
+TEL_X_PATH_LIST =       "/cellwan-oper-data/cellwan-hardware/cellular-modem-status, /cellwan-oper-data/cellwan-hardware/cellular-modem-temperature, /cellwan-oper-data/cellwan-network/current-service-status, /cellwan-oper-data/cellwan-radio/radio-rat-selected, /cellwan-oper-data/cellwan-connection/cellular-packet-status, /cellwan-oper-data/cellwan-radio/radio-rssi, /cellwan-oper-data/cellwan-radio/radio-rsrp, /cellwan-oper-data/cellwan-radio/radio-rsrq, /cellwan-oper-data/cellwan-hardware/cellular-modem-status, /cellwan-oper-data/cellwan-radio/radio-snr, /cellwan-oper-data/cellwan-radio/radio-rat-selected, /cellwan-oper-data/cellwan-connection/rx-packets, /cellwan-oper-data/cellwan-connection/tx-packets, /cellwan-oper-data/cellwan-connection/cellular-packet-status, /cellwan-oper-data/cellwan-hardware/cellular-carrier"
+
+# IP-address and port of device (port 57500 is used further in Docker Compose file)
+TEL_IP_ADD_LIST =       "1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1,1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1, 1.1.1.1"
+TEL_PORT_LIST =         "57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500, 57500"
